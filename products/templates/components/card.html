@@ -1,0 +1,25 @@
+<div class="flex gap-[10px] m-[30px]">
+
+    {% block content %}
+    {%for product in products %}
+    <a href="{%url 'products:product_details' product.id %}" class="block w-[270px] shadow  p-[10px]">
+        <img alt="" src="{{product.image.url}}" class=" w-full h-[200px] object-cover " />
+
+        <h3 class="mt-4 text-lg font-bold text-gray-900 sm:text-xl">{{product.name}}</h3>
+
+        <p class="mt-2 max-w-sm text-gray-700">
+            <span class="text-[#DB4444]">{{product.price}}$</span> <del>{{product.alternatePrice}}$</del>
+        </p>
+        <p>
+            <i class="fa-solid fa-star text-[#FFAD33]"></i>
+            <i class="fa-solid fa-star text-[#FFAD33]"></i>
+            <i class="fa-solid fa-star text-[#FFAD33]"></i>
+            <i class="fa-solid fa-star text-[#FFAD33]"></i>
+            <i class="fa-solid fa-star text-[#FFAD33]"></i>
+        </p>
+       
+    </a>
+    {% endfor %}
+    {% endblock %}
+
+</div>

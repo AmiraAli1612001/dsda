@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#F5F5F5]">
+    {%include "components/header.html"%}
+
+
+    <div class="overflow-x-auto p-[30px]">
+        <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+            <thead class="ltr:text-left rtl:text-right">
+                <tr>
+                    <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Product</th>
+                    <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Price</th>
+                    <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Quntity</th>
+                    <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Subtotal</th>
+                    <th class="px-4 py-2"></th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-200">
+                {%block content%}
+                {%for product in cartProdcuts%}
+                <tr>
+                    <td
+                        class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 flex gap-[10px] items-center justify-center">
+
+                        <img src="{{product.image.url}}" class="w-[40px] h-[40px]" alt="...">
+                        <span>{{product.name}}</span>
+
+
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">${{product.price}}</td>
+                    <td class="whitespace-nowrap px-4 py-2 text-gray-700 ">
+                        <div class="flex justify-between items-center ">
+                            <div class="w-[250px] max-w-sm relative m-auto ">
+                                <div class="relative">
+                                    <button id="decreaseButton"
+                                        class="absolute right-9 top-1 rounded bg-slate-800 p-1.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                        type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                            class="w-4 h-4">
+                                            <path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />
+                                        </svg>
+                                    </button>
+                                    <input id="amountInput" type="number" value="{{product.qty}}"
+                                        class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-20 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                                    <button id="increaseButton"
+                                        class="absolute right-1 top-1 rounded bg-slate-800 p-1.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                        type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                            class="w-4 h-4">
+                                            <path
+                                                d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <script>
+                                // Select the elements
+                                const amountInput = document.getElementById('amountInput');
+                                const increaseButton = document.getElementById('increaseButton');
+                                const decreaseButton = document.getElementById('decreaseButton');
+
+                                // Increase the value
+                                increaseButton.addEventListener('click', () => {
+                                    amountInput.value = parseInt(amountInput.value) + 1;
+                                });
+
+                                // Decrease the value and prevent going below 0
+                                decreaseButton.addEventListener('click', () => {
+                                    amountInput.value = Math.max(0, parseInt(amountInput.value) - 1);
+                                });
+                            </script>
+
+
+
+
+                        </div>
+                    </td>
+                    <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">${{product.totalPrice}}</td>
+                    <td class="whitespace-nowrap px-4 py-2">
+                        <a href="{%url 'products:delete_product' product.id %}"
+                            class="inline-block rounded  text-[#DB4444]  px-4 py-2 text-xs font-medium text-white ">
+                            <i class="fa-solid fa-trash text-[18px]"></i>
+                        </a>
+                    </td>
+                </tr>
+                {%endfor%}
+                {%endblock%}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex justify-between  flex-wrap ">
+        <p class="py-[10px] px-[20px] text-white bg-[#DB4444] w-fit h-fit  float-end mt-[10px] mx-[30px]">
+            <span>total price : </span> <span> {{totalPrice}}$</span>
+        </p>
+
+        <div class="border-[1px] border-solid border-black w-[300px] my-[10px] mx-[30px] ">
+            <h2 class="p-[10px]">Cart Total</h2>
+            <p class="flex justify-between border-b-[1px] border-solid border-[black] w-[300px] p-[10px]">
+                <span>Shipping: </span>
+                <span>free</span>
+            </p>
+            <p class="flex justify-between  w-[300px] p-[10px]">
+                <span>Total: </span>
+                <span>{{totalPrice}}$</span>
+            </p>
+        </div>
+
+    </div>
+</body>
+
+</html>
